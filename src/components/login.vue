@@ -29,8 +29,8 @@ export default {
     return {
       // 这是登录表单的数据绑定
       loginForm: {
-        username: '',
-        password: ''
+        username: 'admin',
+        password: '123456'
       },
       // 这是表单的验证规则
       loginFormRule: {
@@ -53,6 +53,7 @@ export default {
       // 表单重置
       this.$refs.loginFormRef.resetFields()
     },
+    // 登录功能
     login () {
       // 登录验证,表单不合法返回false,不发送登录请求
       this.$refs.loginFormRef.validate(async valid => {
@@ -63,6 +64,11 @@ export default {
         // 状态码不等于200表示登录失败,返回提示信息
         if (res.meta.status !== 200) return this.$message.error('登录失败!')
         this.$message.success('登录成功!')
+        // console.log(res)
+        // 保存tocken到客户端的sessionStorage中
+        window.sessionStorage.setItem('tocken', res.data.tocken)
+        // 跳转路由到 /home
+        this.$router.push('/home')
       })
     }
   }
