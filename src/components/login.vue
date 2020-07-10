@@ -64,9 +64,9 @@ export default {
         // 状态码不等于200表示登录失败,返回提示信息
         if (res.meta.status !== 200) return this.$message.error('登录失败!')
         this.$message.success('登录成功!')
-        // console.log(res)
+        console.log(res)
         // 保存tocken到客户端的sessionStorage中
-        window.sessionStorage.setItem('tocken', res.data.tocken)
+        window.sessionStorage.setItem('token', res.data.token)
         // 跳转路由到 /home
         this.$router.push('/home')
       })
