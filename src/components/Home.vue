@@ -13,7 +13,7 @@
         <el-aside :width="isCloospse ? '64px' : '200px'">
             <div class="toffle-button" @click="toggleColler">|||</div>
             <!-- 侧边栏菜单区域 只展开一个菜单 -->
-                <el-menu background-color="#333744" text-color="#fff" active-text-color="#409bff" :unique-opened="true" :collapse="isCloospse" :collapse-transition="false">
+                <el-menu background-color="#333744" text-color="#fff" active-text-color="#409bff" :unique-opened="true" :collapse="isCloospse" :collapse-transition="false" :router="true" :default-active="activePath">
                     <!-- 一级菜单 :动态绑定 int转字符串 + '' -->
                   <el-submenu :index="item.id + '' " v-for="item in menulist" :key="item.id">
                       <!-- 一级菜单模板 -->
@@ -24,7 +24,8 @@
                       <span>{{item.authName}}</span>
                     </template>
                     <!-- 二级菜单 -->
-                    <el-menu-item :index="subitem.id + ''" v-for="subitem in item.children" :key="subitem.id">
+                    <!-- 跳转路由地址加 / + path -->
+                    <el-menu-item :index="'/'+subitem.path" v-for="subitem in item.children" :key="subitem.id" @click="saveNavState('/'+subitem.path)">
                             <!-- 二级菜单模板 -->
                           <template slot="title">
                               <!-- 二级菜单图标 -->
@@ -37,15 +38,20 @@
                 </el-menu>
         </el-aside>
         <!-- 右侧主体区域 -->
-        <el-main>Main</el-main>
+        <el-main>
+          <!-- 路由占位符 -->
+          <router-view></router-view>
+        </el-main>
       </el-container>
     </el-container>
 </template>
 
 <script>
 export default {
+  // 生命周期函数,页面创建时调用
   created () {
     this.getMenunList()
+    this.activePath = window.sessionStorage.getItem('activePath')
   },
   data () {
     return {
@@ -60,7 +66,9 @@ export default {
         145: 'el-icon-s-tools'
       },
       // 是否折叠菜单
-      isCloospse: false
+      isCloospse: false,
+      // 激活的值
+      activePath: ''
     }
   },
   methods: {
@@ -79,6 +87,11 @@ export default {
     // 点击按钮折叠菜单
     toggleColler () {
       this.isCloospse = !this.isCloospse
+    },
+    // 保持连接激活状态
+    saveNavState (activePath) {
+      window.sessionStorage.setItem('activePath', activePath)
+      this.activePath = activePath
     }
   }
 }
