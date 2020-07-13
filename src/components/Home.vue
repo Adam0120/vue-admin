@@ -3,7 +3,7 @@
     <!-- 头部区域 -->
       <el-header>
           <div>
-              <img src="../assets/images/me1.jpg" alt="">
+              <img src="../assets/images/logo.png" alt="">
               <span>电商后台管理系统</span>
           </div>
       <el-button type="info" @click="logout">退出</el-button></el-header>
@@ -129,9 +129,10 @@ export default {
         align-items: center;
     }
     img{
-        width: 60px;
-        height: 60px;
+        width: 50px;
+        height: 50px;
         margin-right: 15px;
+        margin-left: 20px;
     }
 }
 .el-aside{
