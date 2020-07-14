@@ -205,7 +205,7 @@ export default {
       // 成功
       this.userlist = res.data.users
       this.total = res.data.total
-      console.log(res)
+      // console.log(res)
     },
     // 监听pagesize事件
     handleSizeChange (newSize) {
