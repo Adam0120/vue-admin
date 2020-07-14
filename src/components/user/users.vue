@@ -43,7 +43,7 @@
                 <!-- 修改按钮 -->
                 <el-button type="primary" icon="el-icon-edit" size="mini" @click="showDialoglog(scope.row.id)"></el-button>
                 <!-- 删除按钮 -->
-                <el-button type="danger" icon="el-icon-delete" size="mini"></el-button>
+                <el-button type="danger" icon="el-icon-delete" size="mini" @click="removeUserById(scope.row.id)"></el-button>
                 <!-- 分配权限 -->
                 <el-tooltip effect="dark" content="分配角色" placement="top" :enterable="false">
                       <el-button type="warning" icon="el-icon-setting" size="mini"></el-button>
@@ -205,7 +205,7 @@ export default {
       // 成功
       this.userlist = res.data.users
       this.total = res.data.total
-      console.log(res)
+      // console.log(res)
     },
     // 监听pagesize事件
     handleSizeChange (newSize) {
@@ -281,7 +281,7 @@ export default {
         if (!valid) return
         // 通过时发送表单修改请求
         const { data: res } = await this.$http.put('users/' + this.editForm.id, { email: this.editForm.email, mobile: this.editForm.mobile })
-        console.log(res)
+        // console.log(res)
         if (res.meta.status !== 200) {
           return this.$message.error('修改用户失败!')
         }
@@ -291,7 +291,35 @@ export default {
         this.getUserList()
         this.$message.success('修改用户成功!')
       })
+    },
+    // 根据id删除用户的信息
+    removeUserById (id) {
+      // 询问用户是否删除数据
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'danger'
+      }).then(async () => {
+        const { data: res } = await this.$http.delete('users/' + id)
+        if (res.meta.status !== 200) {
+          return this.$message({
+            type: 'error',
+            message: '删除失败!'
+          })
+        }
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
+        })
+        this.getUserList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
+
   }
 
 }
