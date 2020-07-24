@@ -62,9 +62,10 @@ export default {
         // await 可以直接从后台接收数据,但只能是使用在 asyuc 中
         const { data: res } = await this.$http.post('login', this.loginForm)
         // 状态码不等于200表示登录失败,返回提示信息
+        // console.log(res)
         if (res.meta.status !== 200) return this.$message.error('登录失败!')
         this.$message.success('登录成功!')
-        console.log(res)
+        // console.log(res)
         // 保存tocken到客户端的sessionStorage中
         window.sessionStorage.setItem('token', res.data.token)
         // 跳转路由到 /home
